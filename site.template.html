@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="{{INTRO}}">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{PROFILE_NAME}} — Projects, writing & a little tea">
+  <meta property="og:description" content="{{INTRO}}">
+  <meta property="og:url" content="{{SITE_URL}}">
+  <meta property="og:image" content="{{SITE_URL}}/assets/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="{{SITE_URL}}/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  {{SUBSTACK_FEED_LINK}}
+  <link rel="preload" href="assets/fonts/geist-variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/project-ecosystem.css">
+  <link rel="stylesheet" href="assets/css/project-network.css">
+  <script src="assets/js/theme.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
+  <title>{{PROFILE_NAME}} — Projects, writing & a little tea</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-shell" id="top">
+    <header class="site-header"><div class="header-inner">
+      <a class="wordmark" href="#top" aria-label="Marqicci, home"><span class="brand-tea" id="tea-logo" aria-hidden="true">{{TEA_LOGO}}</span><span>marqicci.</span></a>
+      <nav class="main-nav" aria-label="Main navigation"><a href="#connections">Map</a><a href="#work">Work</a><a href="#writing">Writing</a><a href="#cv">CV</a></nav>
+      <div class="header-actions"><a class="button button--small button--outline hello-link" href="#connect">Say hello <span aria-hidden="true">↗</span></a><button class="icon-button theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20.3 14a8.5 8.5 0 0 1-10.2-10.3A8.5 8.5 0 1 0 20.3 14Z"/></svg></button></div>
+    </div></header>
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy"><p class="hero-greeting"><span class="status-dot" aria-hidden="true"></span> {{ROLE}}</p><h1 id="hero-title">Hi, I’m <strong>{{PROFILE_NAME}}.</strong></h1><p class="hero-intro">A curious mind. Always brewing.</p><div class="hero-actions"><a class="button button--primary" href="#work">See my work <span aria-hidden="true">↘</span></a><a class="button button--outline" href="#cv">My CV <span aria-hidden="true">↓</span></a></div></div>
+        <a class="hero-map" href="#connections" aria-label="Explore the project map">
+          <div class="hero-map-kicker"><span>FIELD NOTES</span><span>PROJECTS / SYSTEMS</span></div>
+          <svg viewBox="0 0 346 140" fill="none" aria-hidden="true">
+            <path d="M25 26h15m-7.5-7.5v15M306 117h15m-7.5-7.5v15" stroke="currentColor" opacity=".33"/>
+            <path d="M119 70h45q9 0 9-9V35q0-9 9-9h40m-103 44h103m-103 0h45q9 0 9 9v26q0 9 9 9h40" stroke="currentColor" opacity=".48" stroke-width="1.3"/>
+            <circle cx="173" cy="70" r="4" fill="currentColor"/>
+            <rect x="56" y="38" width="63" height="64" rx="11" class="hero-map-core"/>
+            <path d="m77 62 10 8-10 8m17 1h8" stroke="var(--paper)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <g class="hero-map-satellites">
+              <rect x="222" y="12" width="57" height="28" rx="6"/>
+              <rect x="222" y="56" width="57" height="28" rx="6"/>
+              <rect x="222" y="100" width="57" height="28" rx="6"/>
+            </g>
+            <path d="M238 22h12v8h-12zm16 2h9m-9 4h6m-22 42 5-5 5 5-5 5zm13-3h12m-12 6h8m-21 39h9m-9 5h15m5-5h5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M292 26h8m-8 44h8m-8 44h8" stroke="currentColor" opacity=".42" stroke-linecap="round"/>
+          </svg>
+          <div class="hero-map-footer"><strong>Project map</strong><span aria-hidden="true">↘</span></div>
+        </a>
+      </section>
+      <section class="connections-section section" id="connections" aria-labelledby="connections-title">
+        <div class="section-heading"><div><p class="section-index">01 / Project ecosystem</p><h2 id="connections-title">How it fits together<span>.</span></h2></div><p class="connections-intro">Explore how my projects connect and what moves between them.</p></div>
+        {{CONNECTIONS}}<p class="sr-only" id="map-announcement" aria-live="polite"></p>
+      </section>
+      <section class="work-section section" id="work" aria-labelledby="work-title">
+        <div class="section-heading"><div><p class="section-index">02 / Selected work</p><h2 id="work-title">Things I’ve made<span>.</span></h2></div><div class="project-filters" role="group" aria-label="Filter projects" hidden><button type="button" data-filter="all" aria-pressed="true">All</button><button type="button" data-filter="data" aria-pressed="false">Data</button><button type="button" data-filter="web" aria-pressed="false">Web</button></div></div>
+        <div class="project-grid">{{PROJECTS}}</div><p class="sr-only" id="filter-status" aria-live="polite"></p><a class="text-link all-projects" href="{{GITHUB_URL}}?tab=repositories" target="_blank" rel="noopener noreferrer">More on GitHub <span aria-hidden="true">↗</span></a>
+      </section>
+      <section class="writing-section section" id="writing" aria-labelledby="writing-title"><div class="section-heading"><div><p class="section-index">03 / Writing</p><h2 id="writing-title">On my mind<span>.</span></h2></div>{{SUBSTACK_LINK}}</div><div class="writing-list">{{WRITING}}</div></section>
+      <section class="cv-section section" id="cv" aria-labelledby="cv-title"><div class="section-heading"><div><p class="section-index">04 / About</p><h2 id="cv-title">My CV<span>.</span></h2></div><a class="text-link" href="{{GITHUB_URL}}" target="_blank" rel="noopener noreferrer">GitHub profile <span aria-hidden="true">↗</span></a></div><p class="cv-intro">{{PROFILE_BIO}}</p>{{CV}}</section>
+      <section class="connect-section section" id="connect" aria-labelledby="connect-title"><h2 id="connect-title">Let’s keep in touch<span>.</span></h2><div class="social-links">{{SOCIALS}}</div></section>
+    </main>
+    <footer class="site-footer"><span>© {{YEAR}} {{PROFILE_NAME}}</span><span>Made with tea.</span><a href="#top">Back to top <span aria-hidden="true">↑</span></a></footer>
+  </div>
+  <noscript><style>.theme-toggle{display:none!important}</style></noscript>
+</body>
+</html>

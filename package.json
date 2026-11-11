@@ -1,0 +1,17 @@
+{
+  "name": "marqicci-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A data-driven, dependency-free personal portfolio for GitHub Pages.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/serve.mjs",
+    "preview": "node scripts/serve.mjs --dist",
+    "update:feed": "node scripts/update-feed.mjs",
+    "enrich:local": "node scripts/enrich-local.mjs",
+    "test": "node --test scripts/build.test.mjs scripts/feed.test.mjs scripts/enrich-local.test.mjs",
+    "check": "npm test && npm run build"
+  }
+}

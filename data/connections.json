@@ -1,0 +1,265 @@
+[
+  {
+    "id": "portfolio",
+    "title": "Portfolio",
+    "kind": "Static website",
+    "lane": "Experience",
+    "visibility": "public",
+    "summary": "This portfolio brings together projects, writing, and my CV in a static site.",
+    "repo": "https://github.com/Marqicci/marqicci.github.io",
+    "stack": [
+      "HTML / CSS",
+      "JavaScript",
+      "Node.js",
+      "GitHub Pages"
+    ],
+    "paths": [
+      {
+        "status": "connected",
+        "title": "Substack → writing",
+        "description": "The build caches the public RSS feed and renders articles into the writing index.",
+        "url": "https://marqicci.substack.com/feed",
+        "sourceLabel": "Public feed"
+      },
+      {
+        "status": "separate",
+        "title": "Local drafting",
+        "description": "An optional Ollama task proposes article descriptions. Drafts stay local for review."
+      }
+    ],
+    "relations": [
+      {
+        "to": "marketplace",
+        "status": "shared",
+        "title": "Web tooling",
+        "description": "Both use browser HTML, CSS and JavaScript. The marketplace needs a server; this portfolio does not."
+      }
+    ]
+  },
+  {
+    "id": "swarm-studio",
+    "title": "Swarm Studio",
+    "kind": "Local agent workbench",
+    "lane": "Capture",
+    "visibility": "private",
+    "summary": "A local workspace for planning research missions, assigning tasks, and reviewing collected sources.",
+    "repo": null,
+    "stack": [
+      "Python",
+      "Agno",
+      "Local models",
+      "JSON / ZIP"
+    ],
+    "paths": [
+      {
+        "status": "connected",
+        "title": "Export captured source material",
+        "description": "A mission can export browser captures and source notes in a portable evidence bundle."
+      },
+      {
+        "status": "separate",
+        "title": "Keep the workspaces independent",
+        "description": "Receiving tools read a chosen export file; they do not connect to the running agent workspace."
+      }
+    ],
+    "relations": [
+      {
+        "to": "support-studio",
+        "status": "connected",
+        "title": "Evidence bundle → knowledge drafts",
+        "description": "Support Studio can preview and selectively import browser-evidence JSON or a mission ZIP. Imported material still needs approval."
+      },
+      {
+        "to": "phone-gateway",
+        "status": "connected",
+        "title": "Evidence bundle → source manifest",
+        "description": "The gateway's offline importer reads the same evidence format for hardware research. It does not qualify equipment."
+      }
+    ],
+    "repoState": "initialized"
+  },
+  {
+    "id": "thesus",
+    "title": "THESUS",
+    "kind": "Supervised browser workspace",
+    "lane": "Capture",
+    "visibility": "public",
+    "summary": "A shared Chromium workspace where a person can review proposed browser actions, take over, and see a local history of decisions.",
+    "repo": "https://github.com/VonSchugel/thesus",
+    "stack": [
+      "Python",
+      "Chromium",
+      "SQLite"
+    ],
+    "paths": [
+      {
+        "status": "connected",
+        "title": "Decisions and checkpoints",
+        "description": "The browser workspace keeps a local event history for human review."
+      },
+      {
+        "status": "separate",
+        "title": "Own history format",
+        "description": "The local event history is separate from the dataset and research export formats used by the other tools."
+      }
+    ],
+    "relations": [
+      {
+        "to": "data-osint",
+        "status": "idea",
+        "title": "Browser history → review dataset",
+        "description": "A format adapter and a redaction review would be needed. THESUS logs are not a supported Flywheel input."
+      }
+    ]
+  },
+  {
+    "id": "data-osint",
+    "title": "Data OSINT",
+    "kind": "Dataset curation CLI",
+    "lane": "Review & data",
+    "visibility": "private",
+    "summary": "A local tool for searching authorized AI session archives and building human-reviewed evaluation datasets.",
+    "repo": null,
+    "stack": [
+      "Python",
+      "SQLite FTS5",
+      "JSONL"
+    ],
+    "paths": [
+      {
+        "status": "connected",
+        "title": "Supported archive import",
+        "description": "The CLI reads selected Codex, OpenCode, and manual archives using separate format adapters."
+      },
+      {
+        "status": "connected",
+        "title": "Review → dataset export",
+        "description": "Accepted examples can be frozen into a versioned JSONL dataset after explicit review."
+      }
+    ],
+    "relations": [
+      {
+        "to": "astig",
+        "status": "shared",
+        "title": "Local review workflows",
+        "description": "Both are Python command-line tools with local review records. A Flywheel dataset is not an ASTIG claim input."
+      }
+    ]
+  },
+  {
+    "id": "astig",
+    "title": "ASTIG",
+    "kind": "Evidence review CLI",
+    "lane": "Review & data",
+    "visibility": "private",
+    "summary": "A local pilot that records evidence for and against a claim, groups duplicate sources, and returns a traceable verdict for review.",
+    "repo": null,
+    "stack": [
+      "Python",
+      "JSON",
+      "Local storage"
+    ],
+    "paths": [
+      {
+        "status": "connected",
+        "title": "Source snapshots → verdict receipt",
+        "description": "The pilot records source IDs and offsets so a reviewer can retrace how a verdict was formed."
+      },
+      {
+        "status": "separate",
+        "title": "An explicit input schema",
+        "description": "It needs an operator-prepared claim and source snapshot file, not a stream of agent events."
+      }
+    ]
+  },
+  {
+    "id": "support-studio",
+    "title": "Support Studio",
+    "kind": "Operator pilot",
+    "lane": "Experience",
+    "visibility": "private",
+    "summary": "A local customer-service desk for reviewing cases, approved knowledge, and examples for evaluation.",
+    "repo": null,
+    "stack": [
+      "Python",
+      "Browser UI",
+      "SQLite"
+    ],
+    "paths": [
+      {
+        "status": "connected",
+        "title": "Human approval before reuse",
+        "description": "Imported captures start as knowledge drafts. A reviewer decides what the support workflow can use."
+      },
+      {
+        "status": "separate",
+        "title": "Browser-first pilot",
+        "description": "The desk supports a person working in the browser. It has no live phone connection."
+      }
+    ],
+    "relations": [
+      {
+        "to": "phone-gateway",
+        "status": "idea",
+        "title": "Support desk → live calls",
+        "description": "A voice bridge and real two-way audio tests are still needed; no live call path is implemented."
+      }
+    ],
+    "repoState": "initialized"
+  },
+  {
+    "id": "phone-gateway",
+    "title": "DIY Phone Gateway",
+    "kind": "Hardware feasibility prototype",
+    "lane": "Experience",
+    "visibility": "private",
+    "summary": "A blueprint and Python tools for planning and checking a local phone gateway.",
+    "repo": null,
+    "stack": [
+      "Python",
+      "Linux planning",
+      "JSON manifests"
+    ],
+    "paths": [
+      {
+        "status": "connected",
+        "title": "Offline planning tools",
+        "description": "The prototype produces planning outputs and supports local hardware inventory checks."
+      },
+      {
+        "status": "separate",
+        "title": "Hardware tests pending",
+        "description": "There is no live voice bridge or confirmed concurrent call capacity."
+      }
+    ],
+    "repoState": "initialized"
+  },
+  {
+    "id": "marketplace",
+    "title": "7erfa w Bricole",
+    "kind": "Marketplace prototype",
+    "lane": "Experience",
+    "visibility": "private",
+    "summary": "A Morocco-first home-services marketplace prototype with a synthetic request-to-completion flow.",
+    "repo": null,
+    "stack": [
+      "Node.js",
+      "Fastify",
+      "PGlite",
+      "French / Darija"
+    ],
+    "paths": [
+      {
+        "status": "connected",
+        "title": "Request → match → quote",
+        "description": "The local demo connects client, provider, and pilot-team screens using fictional data."
+      },
+      {
+        "status": "separate",
+        "title": "Pilot constraints",
+        "description": "Onboarding and payments are simulated; the prototype is designed to run on the local machine."
+      }
+    ],
+    "repoState": "initialized"
+  }
+]

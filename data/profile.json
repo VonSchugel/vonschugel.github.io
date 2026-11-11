@@ -1,0 +1,24 @@
+{
+  "name": "Marqicci",
+  "role": "Student · Builder · Writer",
+  "bio": "A student exploring the web, AI, and ideas. I learn by building, then write about what stays with me.",
+  "intro": "Student, builder, and occasional writer.",
+  "siteUrl": "https://marqicci.github.io",
+  "github": "https://github.com/VonSchugel",
+  "substack": "https://marqicci.substack.com",
+  "substackName": "Marqicci Take",
+  "socials": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/VonSchugel"
+    },
+    {
+      "label": "Substack",
+      "url": "https://marqicci.substack.com"
+    },
+    {
+      "label": "X / Twitter",
+      "url": "https://x.com/Marqicci"
+    }
+  ]
+}

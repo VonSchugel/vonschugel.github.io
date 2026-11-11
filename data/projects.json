@@ -1,0 +1,65 @@
+[
+  {
+    "id": "personal-web",
+    "title": "A place on the web",
+    "description": "The portfolio, publishing workflow, and project map you’re exploring now.",
+    "year": "2024 — now",
+    "tags": [
+      "Web",
+      "JavaScript"
+    ],
+    "github": "https://github.com/Marqicci/marqicci.github.io",
+    "demo": "https://marqicci.github.io",
+    "visual": "tea",
+    "featured": true,
+    "map": "portfolio"
+  },
+  {
+    "id": "marketplace",
+    "title": "7erfa w Bricole",
+    "description": "A local prototype for booking neighbourhood services in Morocco.",
+    "year": "2026",
+    "tags": [
+      "Web",
+      "Prototype",
+      "Fastify"
+    ],
+    "github": null,
+    "demo": null,
+    "visual": "pilot",
+    "featured": true,
+    "map": "marketplace"
+  },
+  {
+    "id": "data-osint",
+    "title": "Data OSINT",
+    "description": "Review AI session archives locally and curate evaluation datasets.",
+    "year": "2026",
+    "tags": [
+      "Data",
+      "Python",
+      "SQLite"
+    ],
+    "github": null,
+    "demo": null,
+    "visual": "data",
+    "featured": true,
+    "map": "data-osint"
+  },
+  {
+    "id": "thesus",
+    "title": "THESUS",
+    "description": "A browser workspace built around human review, takeover, and replay.",
+    "year": "2026",
+    "tags": [
+      "Web",
+      "Prototype",
+      "Python"
+    ],
+    "github": "https://github.com/VonSchugel/thesus",
+    "demo": null,
+    "visual": "browser",
+    "featured": true,
+    "map": "thesus"
+  }
+]

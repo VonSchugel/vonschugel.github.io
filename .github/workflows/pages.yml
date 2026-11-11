@@ -1,0 +1,71 @@
+name: Publish portfolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 7 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    outputs:
+      publish: ${{ steps.plan.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Check whether this run needs a build
+        id: plan
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const profile = JSON.parse(fs.readFileSync('data/profile.json', 'utf8'));
+          const publish = process.env.GITHUB_EVENT_NAME !== 'schedule' || Boolean(profile.substack);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `publish=${publish}\n`);
+          NODE
+      - name: Refresh scheduled articles without regressing the published feed
+        if: steps.plan.outputs.publish == 'true' && github.event_name == 'schedule'
+        run: npm run update:feed -- --require-fresh
+      - name: Refresh cached Substack articles for a content update
+        if: steps.plan.outputs.publish == 'true' && github.event_name != 'schedule'
+        run: npm run update:feed
+      - name: Verify and build
+        if: steps.plan.outputs.publish == 'true'
+        run: npm run check
+      - name: Configure GitHub Pages
+        if: steps.plan.outputs.publish == 'true'
+        uses: actions/configure-pages@v5
+      - name: Upload static site
+        if: steps.plan.outputs.publish == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    if: needs.build.outputs.publish == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

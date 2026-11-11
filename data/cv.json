@@ -1,0 +1,26 @@
+{
+  "summary": "Student & independent learner",
+  "experience": [
+    {
+      "period": "2024 — now",
+      "title": "Independent web projects",
+      "description": "Portfolio, local research tools, and web prototypes."
+    },
+    {
+      "period": "2026",
+      "title": "Writing on Marqicci Take",
+      "description": "Essays on language and perspective."
+    }
+  ],
+  "skills": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "Vercel AI SDK"
+  ],
+  "now": "Exploring the web, AI, and ideas."
+}
