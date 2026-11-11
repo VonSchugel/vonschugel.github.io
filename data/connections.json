@@ -95,8 +95,7 @@
           "evidence": "Synthetic JSON and ZIP imports preserved the source ID and left every hardware qualification flag unset."
         }
       }
-    ],
-    "repoState": "initialized"
+    ]
   },
   {
     "id": "thesus",
@@ -242,8 +241,7 @@
           "boundary": "The voice adapter and physical audio tests are pending. The existing Swarm file handoffs carry research evidence only."
         }
       }
-    ],
-    "repoState": "initialized"
+    ]
   },
   {
     "id": "phone-gateway",
@@ -269,8 +267,7 @@
         "title": "Hardware tests pending",
         "description": "There is no live voice bridge or confirmed concurrent call capacity."
       }
-    ],
-    "repoState": "initialized"
+    ]
   },
   {
     "id": "marketplace",
@@ -297,7 +294,6 @@
         "title": "Pilot constraints",
         "description": "Onboarding and payments are simulated; the prototype is designed to run on the local machine."
       }
-    ],
-    "repoState": "initialized"
+    ]
   }
 ]

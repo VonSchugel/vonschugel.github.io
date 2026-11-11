@@ -194,13 +194,14 @@ function renderConnections(connections, owner) {
   const network = relations.length ? renderNetwork(connections, relations, escapeHTML) : '';
   const jump = (id, className = '') => `<a${className ? ` class="${className}"` : ''} href="#map-detail-${id}" data-map-jump="${id}">${escapeHTML(byId.get(id).title)}</a>`;
   const lanes = PROJECT_LANES.map(label => ({ label, projects: connections.filter(entry => entry.lane === label) })).filter(lane => lane.projects.length);
+  const initialized = connections.filter(entry => entry.repoState === 'initialized').length;
   const overview = lanes.length ? `<div class="map-overview">
     <div class="map-overview-head"><h3>Work areas</h3></div>
     <ul class="overview-metrics">
       <li class="overview-metric"><strong>${connections.length}</strong> Projects</li>
       <li class="overview-metric"><strong>${relations.filter(item=>item.status==='connected').length}</strong> File handoffs</li>
       <li class="overview-metric"><strong>${connections.filter(entry=>entry.visibility==='private').length}</strong> Private repos</li>
-      <li class="overview-metric"><strong>${connections.filter(entry=>entry.repoState==='initialized').length}</strong> Newly initialized</li>
+      ${initialized ? `<li class="overview-metric"><strong>${initialized}</strong> Newly initialized</li>` : ''}
     </ul>
     <ol class="ecosystem-flow" aria-label="Projects by role">${lanes.map(lane=>`<li class="flow-stage"><h4 class="flow-stage-label">${escapeHTML(lane.label)}</h4><ul class="flow-chips">${lane.projects.map(entry=>`<li>${jump(entry.id,'flow-chip')}</li>`).join('')}</ul></li>`).join('')}</ol>
   </div>` : '';
