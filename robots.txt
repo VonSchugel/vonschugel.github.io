@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://marqicci.github.io/sitemap.xml
+Sitemap: https://vonschugel.github.io/marqicci.github.io/sitemap.xml

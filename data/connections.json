@@ -6,7 +6,7 @@
     "lane": "Experience",
     "visibility": "public",
     "summary": "This portfolio brings together projects, writing, and my CV in a static site.",
-    "repo": "https://github.com/Marqicci/marqicci.github.io",
+    "repo": "https://github.com/VonSchugel/marqicci.github.io",
     "stack": [
       "HTML / CSS",
       "JavaScript",
@@ -32,7 +32,13 @@
         "to": "marketplace",
         "status": "shared",
         "title": "Web tooling",
-        "description": "Both use browser HTML, CSS and JavaScript. The marketplace needs a server; this portfolio does not."
+        "description": "Both projects use HTML, CSS and JavaScript in the browser.",
+        "contract": {
+          "artifact": "Shared HTML, CSS and JavaScript conventions.",
+          "transfer": "The portfolio builds static files. The marketplace runs a Fastify server with PGlite.",
+          "result": "A published portfolio and a local booking prototype.",
+          "boundary": "Each has its own build and runtime. They exchange no application data."
+        }
       }
     ]
   },
@@ -67,13 +73,27 @@
         "to": "support-studio",
         "status": "connected",
         "title": "Evidence bundle → knowledge drafts",
-        "description": "Support Studio can preview and selectively import browser-evidence JSON or a mission ZIP. Imported material still needs approval."
+        "description": "Support Studio can turn selected research captures into knowledge drafts.",
+        "contract": {
+          "artifact": "Swarm browser-evidence JSON or the same file inside a mission ZIP.",
+          "transfer": "An operator exports a mission, previews the import, and chooses which captures to commit to a business workspace.",
+          "result": "Knowledge drafts with source IDs for review.",
+          "boundary": "A reviewer must verify each draft before it can inform support answers.",
+          "evidence": "Synthetic Swarm exports passed through the real importer in both JSON and ZIP form."
+        }
       },
       {
         "to": "phone-gateway",
         "status": "connected",
         "title": "Evidence bundle → source manifest",
-        "description": "The gateway's offline importer reads the same evidence format for hardware research. It does not qualify equipment."
+        "description": "The gateway's offline importer turns the same Swarm export into source cards for hardware research.",
+        "contract": {
+          "artifact": "Swarm browser-evidence JSON or the same file inside a mission ZIP.",
+          "transfer": "The gateway validates the selected file with the same portable validator used by Support Studio.",
+          "result": "A versioned JSON manifest with unreviewed source cards.",
+          "boundary": "Modem, operator, two-way audio and capacity qualification require separate physical tests.",
+          "evidence": "Synthetic JSON and ZIP imports preserved the source ID and left every hardware qualification flag unset."
+        }
       }
     ],
     "repoState": "initialized"
@@ -108,7 +128,13 @@
         "to": "data-osint",
         "status": "idea",
         "title": "Browser history → review dataset",
-        "description": "A format adapter and a redaction review would be needed. THESUS logs are not a supported Flywheel input."
+        "description": "A proposed adapter would let an operator review selected browser history as dataset candidates.",
+        "contract": {
+          "artifact": "Selected records from the local THESUS browser history.",
+          "transfer": "Redact the selected records and translate them to the manual event schema accepted by Data OSINT.",
+          "result": "Candidates for review. Approved examples could enter a versioned JSONL evaluation dataset.",
+          "boundary": "The adapter and redaction review are still needed. Data OSINT currently accepts its documented archive formats."
+        }
       }
     ]
   },
@@ -142,7 +168,13 @@
         "to": "astig",
         "status": "shared",
         "title": "Local review workflows",
-        "description": "Both are Python command-line tools with local review records. A Flywheel dataset is not an ASTIG claim input."
+        "description": "Both are Python command-line tools with human review and traceable local records.",
+        "contract": {
+          "artifact": "Data OSINT exports reviewed JSONL examples. ASTIG accepts a claim and source snapshots.",
+          "transfer": "The tools follow separate review workflows and exchange no files.",
+          "result": "An evaluation dataset from Data OSINT and verdict receipts from ASTIG.",
+          "boundary": "Any future integration would need to construct an explicit claim and source snapshots."
+        }
       }
     ]
   },
@@ -202,7 +234,13 @@
         "to": "phone-gateway",
         "status": "idea",
         "title": "Support desk → live calls",
-        "description": "A voice bridge and real two-way audio tests are still needed; no live call path is implemented."
+        "description": "A proposed voice bridge would connect the browser support desk to calls through the gateway.",
+        "contract": {
+          "artifact": "Call events and two-way audio from a future voice bridge.",
+          "transfer": "A voice adapter would connect the support desk to a qualified gateway.",
+          "result": "A potential operator workflow for live calls.",
+          "boundary": "The voice adapter and physical audio tests are pending. The existing Swarm file handoffs carry research evidence only."
+        }
       }
     ],
     "repoState": "initialized"

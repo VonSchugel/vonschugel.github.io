@@ -417,6 +417,98 @@
 }
 
 .network-inspector-action:hover { border-color: #aaa; background: var(--network-raised); }
+
+.network-trace-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px;
+  margin-block-start: 4px;
+  padding: 3px;
+  border: 1px solid var(--network-rule);
+  border-radius: 7px;
+  background: var(--network-bg);
+}
+
+.network-trace-controls [data-trace-mode] {
+  justify-self: stretch;
+  justify-content: center;
+  min-inline-size: 0;
+  min-block-size: 32px;
+  margin: 0;
+  padding: 4px 2px;
+  border-color: transparent;
+  color: var(--network-muted);
+  font-size: 11px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.network-trace-controls [data-trace-mode]:hover { border-color: var(--network-rule); color: var(--network-text); }
+.network-trace-controls [data-trace-mode][aria-pressed="true"],
+.network-trace-list [data-trace-route][aria-pressed="true"] {
+  border-color: #eee;
+  background: #eee;
+  color: #151515;
+}
+
+.network-trace-list {
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.network-trace-list [data-trace-route],
+.network-trace-steps [data-trace-step] {
+  display: grid;
+  gap: 3px;
+  justify-content: stretch;
+  inline-size: 100%;
+  min-block-size: 42px;
+  margin: 0;
+  padding: 6px 8px;
+  border: 1px solid var(--network-rule);
+  background: var(--network-bg);
+  font-size: 12px;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+.network-trace-steps [data-trace-step]:hover { border-color: #888; background: var(--network-raised); }
+
+.network-trace-list small,
+.network-trace-steps small {
+  color: var(--network-muted);
+  font: 10px/1.4 var(--mono);
+}
+
+.network-trace-list [data-trace-route][aria-pressed="true"] small { color: #484848; }
+
+.network-trace-steps {
+  display: grid;
+  gap: 5px;
+  padding-inline-start: 22px;
+  list-style: decimal outside;
+}
+
+.network-trace-steps li { min-inline-size: 0; }
+.network-trace-steps li::marker { color: var(--network-muted); font: 600 11px/1 var(--mono); }
+
+.network-contract {
+  margin: 4px 0 0;
+  padding: 2px 10px;
+  border: 1px solid var(--network-rule);
+  border-radius: 7px;
+  background: var(--network-bg);
+}
+
+.network-contract > div { display: grid; gap: 2px; padding-block: 7px; }
+.network-contract > div + div { border-block-start: 1px solid var(--network-rule); }
+.network-contract dt { color: var(--network-muted); font: 600 10px/1.4 var(--mono); }
+.network-contract dd { margin: 0; font-size: 12px; line-height: 1.45; }
+
+.network-inspector-title:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
 .network-legend {
   display: flex;
   flex-wrap: wrap;
@@ -431,6 +523,14 @@
 
 .network-view :is(button, a):focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .network-viewport:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+
+@media (min-width: 1011px) {
+  .network-layout:has(.network-trace-controls, .network-contract) .network-viewport {
+    position: sticky;
+    top: calc(var(--header-height, 88px) + 12px);
+    align-self: start;
+  }
+}
 
 @media (max-width: 1010px) {
   .network-layout { grid-template-columns: minmax(0, 1fr); }
@@ -451,12 +551,15 @@
 
 @media (max-width: 740px) and (pointer: coarse) {
   .network-layout::before { content: 'Swipe to pan · Fit shows all'; }
+  .network-trace-controls [data-trace-mode] { min-block-size: 40px; }
+  .network-trace-list [data-trace-route],
+  .network-trace-steps [data-trace-step] { min-block-size: 44px; }
 }
 
 @media (max-width: 560px) {
   .network-view { padding: 12px 10px 15px; }
   .network-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; margin-block-end: 9px; }
-  .network-toolbar .network-filter-group { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); inline-size: 100%; }
+  .network-toolbar .network-filter-group { display: grid; grid-column: 1 / -1; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); align-items: stretch; inline-size: 100%; }
   .network-toolbar button { min-block-size: 36px; gap: 4px; padding-inline: 5px; font-size: 11px; }
   .network-toolbar .network-zoom { justify-self: start; flex-wrap: nowrap; }
   .network-toolbar .network-zoom [data-network-zoom] { min-inline-size: 28px; }
@@ -493,5 +596,5 @@
 
 @media (forced-colors: active) {
   .network-view :is(.network-node.is-active, .network-edge-button.is-active, button[aria-pressed="true"]) { border-color: Highlight; color: Highlight; }
-  .network-view :is(button, a, .network-viewport):focus-visible { outline-color: Highlight; }
+  .network-view :is(button, a, .network-viewport, .network-inspector-title):focus-visible { outline-color: Highlight; }
 }

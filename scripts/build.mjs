@@ -7,6 +7,7 @@ export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const HTTP_PROTOCOLS = new Set(['https:', 'http:']);
 const CONNECTION_STATUSES = { connected: 'Connected', shared: 'Shared stack', separate: 'Separate runtime', idea: 'Idea' };
 const RELATION_LABELS = { connected: 'File handoff', shared: 'Shared stack', separate: 'Separate', idea: 'Needs adapter' };
+const CONTRACT_FIELDS = { artifact: 'Input', transfer: 'Handoff', result: 'Result', boundary: 'Boundary', evidence: 'Verification' };
 const SOURCE_LABELS = { public: 'Public source', private: 'Private repo', local: 'Local source' };
 const PROJECT_LANES = ['Capture', 'Review & data', 'Experience'];
 
@@ -66,6 +67,13 @@ function validateConnections(connections) {
       if (!Object.hasOwn(RELATION_LABELS, item.status)) throw new Error(`${label}.status is not a recognised relationship.`);
       string(item.title, `${label}.title`);
       string(item.description, `${label}.description`);
+      if (item.contract != null) {
+        if (typeof item.contract !== 'object' || Array.isArray(item.contract)) throw new Error(`${label}.contract must be an object.`);
+        for (const field of Object.keys(CONTRACT_FIELDS)) {
+          if (field === 'evidence' && item.contract.evidence == null) continue;
+          string(item.contract[field], `${label}.contract.${field}`);
+        }
+      }
       const pair = [entry.id, item.to].sort().join('/');
       if (pairs.has(pair)) throw new Error(`${label} duplicates a project pair.`);
       pairs.add(pair);
@@ -199,7 +207,7 @@ function renderConnections(connections, owner) {
   const matrix = relations.length ? `<div class="map-matrix" data-map-view="compatibility" id="project-compatibility" role="region" aria-label="Project compatibility table" tabindex="0">
     <table class="compatibility-table"><caption>Compatibility between projects. File handoffs are implemented; adapter ideas still need work.</caption>
     <thead><tr><th scope="col">From</th><th scope="col">To</th><th scope="col">Status</th><th scope="col">How it fits</th></tr></thead>
-    <tbody>${relations.map(item => `<tr><th scope="row">${jump(item.from)}</th><td>${jump(item.to)}</td><td><span class="matrix-status" data-status="${item.status === 'idea' ? 'planned' : item.status}">${RELATION_LABELS[item.status]}</span></td><td><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.description)}</small></td></tr>`).join('')}</tbody></table>
+    <tbody>${relations.map(item => `<tr><th scope="row">${jump(item.from)}</th><td>${jump(item.to)}</td><td><span class="matrix-status" data-status="${item.status === 'idea' ? 'planned' : item.status}">${RELATION_LABELS[item.status]}</span></td><td><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.description)}</small>${item.contract ? `<details class="matrix-contract"><summary>Handoff details</summary><dl>${Object.entries(CONTRACT_FIELDS).filter(([key]) => item.contract[key]).map(([key, title]) => `<div><dt>${title}</dt><dd>${escapeHTML(item.contract[key])}</dd></div>`).join('')}</dl></details>` : ''}</td></tr>`).join('')}</tbody></table>
   </div>` : '';
   const branches = connections.map((entry, index) => `<li><a class="map-node" data-map-select="${entry.id}" href="#map-detail-${entry.id}">
     <span class="map-node-icon" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><span class="map-node-text"><strong>${escapeHTML(entry.title)}</strong><small>${escapeHTML(entry.kind)}</small></span><span class="map-node-arrow" aria-hidden="true">→</span>

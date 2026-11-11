@@ -39,7 +39,7 @@ The build replaces `index.html` and recreates `dist/`. Edit the template and dat
 
 **Projects:** each entry needs a unique lowercase `id`, `title`, one-sentence `description`, `year`, and `tags` array. Set `github` and `demo` to complete URLs or `null`. The decorative `visual` treatments include `tea`, `pilot`, `data`, and `browser`. Set `map` to the matching project-map ID. Every entry is displayed; `featured` is reserved metadata.
 
-**Project map:** use `lane` for Capture, Review & data, or Experience. Set `visibility` to public, private, or local. Only public projects can include a `repo` URL. A newly initialized private repository can use `repoState: "initialized"` so the map says README only. `paths` describe work inside a project or a public integration. Each `relations` entry uses a target ID (`to`), status, title, and explanation to populate the network and compatibility table. Solid arrows show working file handoffs, dotted lines show shared technology, and dashed arrows show proposed adapters.
+**Project map:** use `lane` for Capture, Review & data, or Experience. Set `visibility` to public, private, or local. Only public projects can include a `repo` URL. A newly initialized private repository can use `repoState: "initialized"` so the map says README only. `paths` describe work inside a project or a public integration. Each `relations` entry uses a target ID (`to`), status, title, and explanation. Add a `contract` with `artifact`, `transfer`, `result`, `boundary`, and optional `evidence` to show the exchange in the network and compatibility table. The upstream and downstream views follow directed arrows in the current filters. A route containing any proposed adapter is marked Proposed.
 
 **CV:** edit `summary`, `experience`, `skills`, and `now` in `data/cv.json`. Experience entries use `period`, `title`, and optional `description`. An optional `education` array uses the same shape and adds an education card when populated. Add verified facts only; the tools list describes project exposure rather than professional expertise.
 
@@ -61,9 +61,9 @@ Run it after `npm run update:feed` when fresh articles are wanted, or independen
 
 ## Publish
 
-Copy this folder’s contents, including hidden files, into the root of `marqicci/marqicci.github.io`. In **Settings → Pages → Build and deployment**, choose **GitHub Actions**, then push reviewed files to `main`. Adjust the workflow branch if your default differs.
+The source repository is `VonSchugel/marqicci.github.io`. To publish from it, enable Actions for the fork if prompted, then choose **GitHub Actions** in **Settings → Pages → Build and deployment**. Push reviewed changes to `main` or run the workflow manually.
 
-The included workflow refreshes articles, verifies content, builds `dist/`, and deploys with GitHub’s official Pages actions. It runs on pushes, manual dispatch, and daily at 07:17 UTC while Substack is configured. The user-site URL is `https://marqicci.github.io/`. Any static host can also serve `dist/`.
+The included workflow refreshes articles, verifies content, builds `dist/`, and deploys with GitHub’s official Pages actions. It runs on pushes, manual dispatch, and daily at 07:17 UTC while Substack is configured. The default Pages address for this repository is `https://vonschugel.github.io/marqicci.github.io/` once Pages is enabled. Any static host can also serve `dist/`.
 
 See [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) and [publishing-source settings](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
@@ -73,4 +73,4 @@ See [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-sta
 
 Keep the original outlined browser tab icon (`assets/favicon.svg`) separate from the solid reference silhouette used in the page header.
 
-The project map covers work developed in these Codex projects. Evidence is based on the local READMEs, implemented workflows, and checked GitHub repository visibility. Private URLs, credentials, customer records, draft data, and local paths are excluded from the published map. The public portfolio repository is linked separately from the local redesign.
+The project map covers work developed in these Codex projects. Evidence is based on the local READMEs, implemented workflows, and checked GitHub repository visibility. Private URLs, credentials, customer records, draft data, and local paths are excluded from the map.

@@ -335,6 +335,13 @@
 .compatibility-table :is(th, td) small { display: block; margin-block-start: 3px; color: var(--ecosystem-muted); font-size: 11px; }
 .compatibility-table a { text-decoration: underline; text-underline-offset: 3px; }
 
+.matrix-contract { margin-block-start: 8px; }
+.matrix-contract summary { width: fit-content; cursor: pointer; }
+.matrix-contract dl { margin-block: 8px 0; }
+.matrix-contract dl > div { padding-block: 5px; border-top: 1px solid var(--ecosystem-border); }
+.matrix-contract dt { color: var(--ecosystem-muted); font: 600 10px/1.4 var(--mono); }
+.matrix-contract dd { margin: 2px 0 0; font-size: 12px; }
+
 .compatibility-table :is(.matrix-status, .compatibility-status) {
   display: inline-block;
   margin: 0 0 3px;

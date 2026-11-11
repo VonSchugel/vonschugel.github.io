@@ -136,7 +136,10 @@ export function renderNetwork(connections, relations, escapeHTML) {
   const { rectangles, height } = layout;
   const nodes = connections.map(entry => inspectorNode(entry, rectangles.get(entry.id)));
   const nodeById = new Map(nodes.map(node => [node.id, node]));
-  const edges = relations.map(({ from, to, status, title, description }) => ({ id: `${from}:${to}`, from, to, status, title, description }));
+  const edges = relations.map(({ from, to, status, title, description, contract }) => ({
+    id: `${from}:${to}`, from, to, status, title, description,
+    ...(contract && { contract: { artifact: contract.artifact, transfer: contract.transfer, result: contract.result, boundary: contract.boundary, evidence: contract.evidence } }),
+  }));
   const drawn = edges.map(edge => ({ edge, route: routeEdge(edge, layout) }));
   const wires = drawn.map(({ edge, route }) => {
     const directed = edge.status === 'connected' || edge.status === 'idea';
@@ -172,7 +175,7 @@ export function renderNetwork(connections, relations, escapeHTML) {
           ${laneLabels}${nodeButtons}${edgeButtons}
         </div>
       </div>
-      <aside class="network-inspector" data-network-inspector aria-label="Network inspector"><h3 class="network-inspector-title">Network overview</h3><p class="network-inspector-text">Select a project or connection for details. Arrows show direction. Dotted lines link projects with tools in common.</p></aside>
+      <aside class="network-inspector" data-network-inspector aria-label="Network inspector"><h3 class="network-inspector-title">Network overview</h3><p class="network-inspector-text">Select a project to trace upstream or downstream. Select a connection to inspect what passes between them.</p></aside>
     </div>
     <script type="application/json" data-network-data>${json}</script>
   </section>`;
