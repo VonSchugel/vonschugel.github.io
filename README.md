@@ -1,4 +1,4 @@
-# marqicci.github.io
+# Marqicci portfolio
 
 A dependency-free portfolio built with HTML, CSS, JavaScript, and a small Node.js content builder. Projects, writing, and the CV are readable without JavaScript.
 
@@ -61,9 +61,9 @@ Run it after `npm run update:feed` when fresh articles are wanted, or independen
 
 ## Publish
 
-The source repository is `VonSchugel/marqicci.github.io`. To publish from it, enable Actions for the fork if prompted, then choose **GitHub Actions** in **Settings → Pages → Build and deployment**. Push reviewed changes to `main` or run the workflow manually.
+The source repository is `VonSchugel/vonschugel.github.io`. To publish from it, enable Actions for the fork if prompted, then choose **GitHub Actions** in **Settings → Pages → Build and deployment**. Push reviewed changes to `main` or run the workflow manually.
 
-The included workflow refreshes articles, verifies content, builds `dist/`, and deploys with GitHub’s official Pages actions. It runs on pushes, manual dispatch, and daily at 07:17 UTC while Substack is configured. The default Pages address for this repository is `https://vonschugel.github.io/marqicci.github.io/` once Pages is enabled. Any static host can also serve `dist/`.
+The included workflow refreshes articles, verifies content, builds `dist/`, and deploys with GitHub’s official Pages actions. It runs on pushes, manual dispatch, and daily at 07:17 UTC while Substack is configured. The default Pages address for this repository is `https://vonschugel.github.io/` once Pages is enabled. Any static host can also serve `dist/`.
 
 See [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) and [publishing-source settings](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
