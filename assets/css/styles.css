@@ -327,3 +327,9 @@ h1 strong{white-space:nowrap}
   .hero-map:hover, .hero-map:hover .hero-map-footer span { transform: none; }
 }
 @media print { .connections-section { display: none; } }
+
+.cv-card, .cv-entry > div { min-width: 0; }
+.cv-tool-groups { display: grid; gap: 14px; }
+.cv-tool-group h4 { margin: 0 0 6px; font-size: 13px; font-weight: 550; }
+.cv-tool-group .cv-skills { gap: 5px; }
+.cv-tool-group .cv-skills li { max-width: 100%; padding: 4px 9px; overflow-wrap: anywhere; }

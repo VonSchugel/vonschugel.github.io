@@ -121,8 +121,19 @@ export function validateData(data) {
   if (!cv || typeof cv !== 'object' || Array.isArray(cv)) throw new Error('cv.json must contain an object.');
   string(cv.summary, 'cv.summary');
   string(cv.now, 'cv.now');
-  for (const key of ['experience', 'skills']) if (!Array.isArray(cv[key])) throw new Error(`cv.${key} must be an array.`);
-  cv.skills.forEach((skill, index) => string(skill, `cv.skills[${index}]`));
+  if (cv.skills != null || cv.toolGroups == null) {
+    if (!Array.isArray(cv.skills)) throw new Error('cv.skills must be an array.');
+    cv.skills.forEach((skill, index) => string(skill, `cv.skills[${index}]`));
+  }
+  if (cv.toolGroups != null) {
+    if (!Array.isArray(cv.toolGroups) || !cv.toolGroups.length) throw new Error('cv.toolGroups must be a non-empty array.');
+    cv.toolGroups.forEach((group, index) => {
+      const label = `cv.toolGroups[${index}]`;
+      string(group?.title, `${label}.title`);
+      if (!Array.isArray(group.tools) || !group.tools.length) throw new Error(`${label}.tools must be a non-empty array.`);
+      group.tools.forEach((tool, toolIndex) => string(tool, `${label}.tools[${toolIndex}]`));
+    });
+  }
   for (const key of ['experience', 'education']) {
     if (cv[key] == null && key === 'education') continue;
     if (!Array.isArray(cv[key])) throw new Error(`cv.${key} must be an array.`);
@@ -179,9 +190,13 @@ export function renderExperience(experience) {
 
 export function renderCV(cv) {
   const entries = items => `<ol class="cv-timeline">${items.map(entry => `<li class="cv-entry"><span class="cv-period mono">${escapeHTML(entry.period)}</span><div><h4>${escapeHTML(entry.title)}</h4>${entry.description ? `<p>${escapeHTML(entry.description)}</p>` : ''}</div></li>`).join('')}</ol>`;
+  const tools = (items, label) => `<ul class="tags cv-skills" aria-label="${escapeHTML(label)}">${items.map(item => `<li>${escapeHTML(item)}</li>`).join('')}</ul>`;
+  const toolList = cv.toolGroups
+    ? `<div class="cv-tool-groups">${cv.toolGroups.map(group => `<div class="cv-tool-group"><h4>${escapeHTML(group.title)}</h4>${tools(group.tools, group.title)}</div>`).join('')}</div>`
+    : tools(cv.skills, 'Tools and technologies');
   return `<div class="cv-grid">
-    <article class="cv-card cv-card--experience"><h3>Experience</h3>${entries(cv.experience)}</article>
-    <article class="cv-card cv-card--skills"><h3>Tools I’ve explored</h3><ul class="tags cv-skills" aria-label="Tools and technologies">${cv.skills.map(skill => `<li>${escapeHTML(skill)}</li>`).join('')}</ul></article>
+    <article class="cv-card cv-card--experience"><h3>Independent work</h3>${entries(cv.experience)}</article>
+    <article class="cv-card cv-card--skills"><h3>Tools I’ve explored</h3>${toolList}</article>
     <article class="cv-card cv-card--now"><h3>Right now</h3><p class="cv-status">${escapeHTML(cv.summary)}</p><p>${escapeHTML(cv.now)}</p></article>
     ${cv.education?.length ? `<article class="cv-card cv-card--education"><h3>Education</h3>${entries(cv.education)}</article>` : ''}
   </div>`;

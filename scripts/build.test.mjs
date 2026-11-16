@@ -88,6 +88,13 @@ test('CV content renders in the page, is escaped, and supports optional educatio
   assert.ok(html.includes('A verified course'));
   data.cv.skills = 'not an array';
   assert.throws(() => validateData(data), /cv.skills must be an array/);
+  delete data.cv.skills;
+  data.cv.toolGroups = [{ title: 'Web & publishing', tools: ['<SVG>'] }];
+  html = renderSite('{{CV}}', data);
+  assert.match(html, /<h4>Web &amp; publishing<\/h4>/);
+  assert.match(html, /<li>&lt;SVG&gt;<\/li>/);
+  data.cv.toolGroups[0].tools = [];
+  assert.throws(() => validateData(data), /cv.toolGroups\[0\]\.tools must be a non-empty array/);
 });
 
 test('small tea logo is present in static markup and article descriptions stay out of the compact list', () => {

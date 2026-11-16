@@ -1,26 +1,67 @@
 {
-  "summary": "Student & independent learner",
+  "summary": "Student, independent builder, and writer",
   "experience": [
     {
-      "period": "2024 — now",
-      "title": "Independent web projects",
-      "description": "Portfolio, local research tools, and web prototypes."
+      "period": "Since 2024",
+      "title": "Web development & publishing",
+      "description": "Built this portfolio with editable content, a Substack feed, an interactive project map, and a GitHub Pages publishing workflow."
     },
     {
       "period": "2026",
-      "title": "Writing on Marqicci Take",
-      "description": "Essays on language and perspective."
+      "title": "THESUS · Supervised browsing",
+      "description": "Built browser sessions with human review, manual takeover, and replay. Tested the handoff with a guided demo."
+    },
+    {
+      "period": "2026",
+      "title": "Data OSINT & ASTIG · Research tools",
+      "description": "Built a terminal interface for research and a review workflow for versioned datasets. Built ASTIG to trace claims back to supplied evidence."
+    },
+    {
+      "period": "2026",
+      "title": "Swarm Studio · Agent workflows",
+      "description": "Integrated local models and tested evidence exports into Support Studio for human review and the DIY Phone Gateway for planning."
+    },
+    {
+      "period": "2026",
+      "title": "7erfa w Bricole · Marketplace prototype",
+      "description": "Built and tested booking, quotes, and operations workflows for a Morocco-focused home services marketplace using fictional transactions."
+    },
+    {
+      "period": "2026",
+      "title": "AEGIS-iPad · Offline evidence review",
+      "description": "Prototyped local model summaries that retain source references, and tested the workflow across Windows and Linux."
+    },
+    {
+      "period": "2026",
+      "title": "Writing & technical documentation",
+      "description": "Write about language and perspective on Marqicci Take. Prepared setup guides, architecture notes, test reports, and LaTeX documents."
     }
   ],
-  "skills": [
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "Next.js",
-    "Tailwind CSS",
-    "Vercel AI SDK"
+  "toolGroups": [
+    {
+      "title": "Web & publishing",
+      "tools": ["HTML", "CSS", "JavaScript", "SVG", "Node.js", "Fastify", "GitHub Pages"]
+    },
+    {
+      "title": "APIs & local data",
+      "tools": ["Python", "FastAPI", "Textual", "SQLAlchemy", "SQLite FTS5", "PGlite", "DBOS", "JSONL"]
+    },
+    {
+      "title": "Agents & local models",
+      "tools": ["Agno", "Ollama", "Qwen3"]
+    },
+    {
+      "title": "Testing & delivery",
+      "tools": ["Playwright", "Chromium", "pytest", "Git", "GitHub Actions"]
+    },
+    {
+      "title": "Writing & documentation",
+      "tools": ["Markdown", "LaTeX", "Substack", "RSS"]
+    },
+    {
+      "title": "Other web tools explored",
+      "tools": ["TypeScript", "React", "Next.js", "Tailwind CSS", "Vercel AI SDK"]
+    }
   ],
-  "now": "Exploring the web, AI, and ideas."
+  "now": "Exploring local AI, traceable evidence, and practical web prototypes."
 }
