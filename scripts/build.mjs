@@ -132,6 +132,7 @@ export function validateData(data) {
       string(group?.title, `${label}.title`);
       if (!Array.isArray(group.tools) || !group.tools.length) throw new Error(`${label}.tools must be a non-empty array.`);
       group.tools.forEach((tool, toolIndex) => string(tool, `${label}.tools[${toolIndex}]`));
+      if (group.context != null) string(group.context, `${label}.context`);
     });
   }
   for (const key of ['experience', 'education']) {
@@ -141,6 +142,10 @@ export function validateData(data) {
       string(entry.period, `cv.${key}[${index}].period`);
       string(entry.title, `cv.${key}[${index}].title`);
       if (entry.description != null) string(entry.description, `cv.${key}[${index}].description`, false);
+      if (entry.link != null) {
+        string(entry.link.label, `cv.${key}[${index}].link.label`);
+        link(entry.link.url, `cv.${key}[${index}].link.url`);
+      }
     });
   }
   if (data.teaLogo != null) string(data.teaLogo, 'teaLogo', false);
@@ -189,16 +194,24 @@ export function renderExperience(experience) {
 }
 
 export function renderCV(cv) {
-  const entries = items => `<ol class="cv-timeline">${items.map(entry => `<li class="cv-entry"><span class="cv-period mono">${escapeHTML(entry.period)}</span><div><h4>${escapeHTML(entry.title)}</h4>${entry.description ? `<p>${escapeHTML(entry.description)}</p>` : ''}</div></li>`).join('')}</ol>`;
-  const tools = (items, label) => `<ul class="tags cv-skills" aria-label="${escapeHTML(label)}">${items.map(item => `<li>${escapeHTML(item)}</li>`).join('')}</ul>`;
+  function timeline(items) {
+    const periods = new Map();
+    for (const entry of items) {
+      if (!periods.has(entry.period)) periods.set(entry.period, []);
+      periods.get(entry.period).push(entry);
+    }
+    const milestones = entries => entries.map(entry => `<li class="cv-entry"><h5>${escapeHTML(entry.title)}</h5>${entry.description ? `<p>${escapeHTML(entry.description)}</p>` : ''}${entry.link ? `<a class="cv-entry-link" href="${escapeHTML(entry.link.url)}">${escapeHTML(entry.link.label)} ${arrow}</a>` : ''}</li>`).join('');
+    return `<ol class="cv-timeline">${[...periods].map(([period, entries]) => `<li class="cv-phase"><h4 class="cv-period">${escapeHTML(period)}</h4><ul class="cv-phase-entries">${milestones(entries)}</ul></li>`).join('')}</ol>`;
+  }
+  const tools = (items, label) => `<ul class="cv-skills" role="list" aria-label="${escapeHTML(label)}">${items.map(item => `<li>${escapeHTML(item)}</li>`).join('')}</ul>`;
   const toolList = cv.toolGroups
-    ? `<div class="cv-tool-groups">${cv.toolGroups.map(group => `<div class="cv-tool-group"><h4>${escapeHTML(group.title)}</h4>${tools(group.tools, group.title)}</div>`).join('')}</div>`
+    ? `<div class="cv-tool-groups">${cv.toolGroups.map(group => `<div class="cv-tool-group"><h4>${escapeHTML(group.title)}</h4>${group.context ? `<p>${escapeHTML(group.context)}</p>` : ''}${tools(group.tools, group.title)}</div>`).join('')}</div>`
     : tools(cv.skills, 'Tools and technologies');
   return `<div class="cv-grid">
-    <article class="cv-card cv-card--experience"><h3>Independent work</h3>${entries(cv.experience)}</article>
-    <article class="cv-card cv-card--skills"><h3>Tools I’ve explored</h3>${toolList}</article>
-    <article class="cv-card cv-card--now"><h3>Right now</h3><p class="cv-status">${escapeHTML(cv.summary)}</p><p>${escapeHTML(cv.now)}</p></article>
-    ${cv.education?.length ? `<article class="cv-card cv-card--education"><h3>Education</h3>${entries(cv.education)}</article>` : ''}
+    <div class="cv-overview"><p class="cv-status">${escapeHTML(cv.summary)}</p><p>${escapeHTML(cv.now)}</p></div>
+    <article class="cv-card cv-card--experience"><h3>Independent work</h3>${timeline(cv.experience)}</article>
+    <article class="cv-card cv-card--skills" id="cv-tools"><h3>Tools I’ve explored</h3>${toolList}</article>
+    ${cv.education?.length ? `<article class="cv-card cv-card--education"><h3>Education</h3>${timeline(cv.education)}</article>` : ''}
   </div>`;
 }
 

@@ -89,10 +89,17 @@ test('CV content renders in the page, is escaped, and supports optional educatio
   data.cv.skills = 'not an array';
   assert.throws(() => validateData(data), /cv.skills must be an array/);
   delete data.cv.skills;
-  data.cv.toolGroups = [{ title: 'Web & publishing', tools: ['<SVG>'] }];
+  data.cv.toolGroups = [{ title: 'Web & publishing', context: 'Sites & demos', tools: ['<SVG>'] }];
+  data.cv.experience.push({ period: '2026', title: 'Independent study', link: { label: 'Read the essay', url: 'https://example.com/essay?a=1&b=2' } });
   html = renderSite('{{CV}}', data);
   assert.match(html, /<h4>Web &amp; publishing<\/h4>/);
+  assert.match(html, /Sites &amp; demos/);
   assert.match(html, /<li>&lt;SVG&gt;<\/li>/);
+  assert.equal((html.match(/class="cv-period">2026</g) || []).length, 2); // One per timeline, including education.
+  assert.match(html, /href="https:\/\/example\.com\/essay\?a=1&amp;b=2"/);
+  data.cv.experience[1].link.url = 'javascript:alert(1)';
+  assert.throws(() => validateData(data), /cv.experience\[1\].link.url has an unsupported URL scheme/);
+  data.cv.experience[1].link.url = 'https://example.com/essay';
   data.cv.toolGroups[0].tools = [];
   assert.throws(() => validateData(data), /cv.toolGroups\[0\]\.tools must be a non-empty array/);
 });
