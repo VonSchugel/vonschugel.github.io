@@ -17,7 +17,7 @@ npm run build
 npm run dev
 ```
 
-Open the local address printed by the preview command. After editing content or the template, rebuild and refresh. `npm run preview` serves the exact `dist/` artifact; `npm run dev -- --port 4174` changes the preview port. `npm run check` runs the focused tests and production build.
+Open the local address printed by the preview command. With `npm run dev` running, save your JSON or template edits and refresh the homepage. Run `npm run build` to update the standalone `index.html` and the production preview. `npm run preview` serves the exact `dist/` artifact; `npm run dev -- --port 4174` changes the preview port. `npm run check` runs the focused tests and production build.
 
 | File | Content |
 | --- | --- |
@@ -26,7 +26,7 @@ Open the local address printed by the preview command. After editing content or 
 | `data/connections.json` | Project inventory, work areas, source visibility, and compatibility links |
 | `data/articles.json` | Cached Substack articles or manually curated writing |
 | `data/cv.json` | On-page CV: experience, tools explored, and current interests |
-| `data/experience.json` | Additional timeline data for the `EXPERIENCE` template marker |
+| `data/experience.json` | Experience card in the CV section, in file order |
 | `site.template.html` | Page structure and section order |
 | `assets/tea-logo.svg` | Small inline header logo |
 | `assets/js/teapot.js` | Header logo’s scroll behavior |
@@ -42,6 +42,8 @@ The build replaces `index.html` and recreates `dist/`. Edit the template and dat
 **Project map:** use `lane` for Capture, Review & data, or Experience. Set `visibility` to public, private, or local. Only public projects can include a `repo` URL. A newly initialized private repository can use `repoState: "initialized"` so the map says README only. `paths` describe work inside a project or a public integration. Each `relations` entry uses a target ID (`to`), status, title, and explanation. Add a `contract` with `artifact`, `transfer`, `result`, `boundary`, and optional `evidence` to show the exchange in the network and compatibility table. The upstream and downstream views follow directed arrows in the current filters. A route containing any proposed adapter is marked Proposed.
 
 **CV:** edit `summary`, `now`, `experience`, and `toolGroups` in `data/cv.json`. The timeline displays periods in the order they first appear and groups entries with the same `period`. Entries have a `title`, optional `description`, and optional `link` with `label` and `url`. Tool groups have a `title`, a `tools` array, and optional `context`. Older files can use a flat `skills` array. An optional `education` array uses the experience entry format.
+
+Edit `data/experience.json` for the Experience card below the CV. Each entry has a period, title, organization and description. To publish either JSON file, commit your edits and push to `main`.
 
 **Writing:** the configured publication is `https://marqicci.substack.com`, with `substackName` set to “Marqicci Take.” Refresh the six most recent public entries with `npm run update:feed`, then rebuild. Articles appear newest first with title and date. For manual curation, set `profile.substack` to `null` and edit articles with `title`, `url`, `date` (`YYYY-MM-DD`), and optional `description`.
 

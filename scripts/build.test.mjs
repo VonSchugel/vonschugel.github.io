@@ -71,6 +71,18 @@ test('an unconfigured publication uses a concise visible fallback without fake l
   assert.throws(() => renderSite('{{UNKNOWN_MARKER}}', data), /Unknown template marker/);
 });
 
+test('the homepage template includes edits from both CV data files', async () => {
+  const template = await readFile(new URL('../site.template.html', import.meta.url), 'utf8');
+  const data = fixture();
+  data.cv.experience[0].title = 'Updated research entry';
+  data.experience[0] = { period: '2024', title: 'Edited role', organization: 'A & B', description: 'Built <tools>.' };
+  const cvSection = renderSite(template, data).match(/<section\b[^>]*\bid="cv"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+  assert.match(cvSection, /Updated research entry/);
+  assert.match(cvSection, /id="experience"[\s\S]*?2024[\s\S]*?Edited role[\s\S]*?A &amp; B[\s\S]*?Built &lt;tools&gt;/);
+  data.experience = [];
+  assert.doesNotMatch(renderSite(template, data), /id="experience"/);
+});
+
 test('CV content renders in the page, is escaped, and supports optional education without invented entries', () => {
   const data = fixture();
   data.cv.summary = '<Student> & learner';

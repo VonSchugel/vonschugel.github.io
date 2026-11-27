@@ -1,9 +1,10 @@
 import http from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { ROOT } from './build.mjs';
+import { ROOT, renderHomepage } from './build.mjs';
 
-const root = path.resolve(ROOT, process.argv.includes('--dist') ? 'dist' : '.');
+const previewDist = process.argv.includes('--dist');
+const root = path.resolve(ROOT, previewDist ? 'dist' : '.');
 const portIndex = process.argv.indexOf('--port');
 const port = Number(portIndex >= 0 ? process.argv[portIndex + 1] : process.env.PORT || 4173);
 if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Port must be a number between 1 and 65535.');
@@ -15,6 +16,17 @@ const server = http.createServer(async (request, response) => {
   try { requested = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); } catch { response.writeHead(400).end('Bad request'); return; }
   let file = path.resolve(root, `.${requested}`);
   if (file !== root && !file.startsWith(`${root}${path.sep}`)) { response.writeHead(403).end('Forbidden'); return; }
+  if (!previewDist && (file === root || file === path.join(root, 'index.html'))) {
+    try {
+      const html = await renderHomepage(root);
+      response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+      response.end(request.method === 'HEAD' ? undefined : html);
+    } catch (error) {
+      response.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
+      response.end(`Cannot render the homepage: ${error.message}`);
+    }
+    return;
+  }
   try {
     if ((await stat(file)).isDirectory()) file = path.join(file, 'index.html');
     const content = await readFile(file);
@@ -22,4 +34,4 @@ const server = http.createServer(async (request, response) => {
     response.end(request.method === 'HEAD' ? undefined : content);
   } catch { response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Page not found'); }
 });
-server.listen(port, '127.0.0.1', () => console.log(`Portfolio preview: http://127.0.0.1:${port} (${process.argv.includes('--dist') ? 'built site' : 'source'})`));
+server.listen(port, '127.0.0.1', () => console.log(`Portfolio preview: http://127.0.0.1:${port} (${previewDist ? 'built site' : 'source'})`));

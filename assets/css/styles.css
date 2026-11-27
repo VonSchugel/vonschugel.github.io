@@ -345,7 +345,7 @@ h1 strong{white-space:nowrap}
 .cv-phase-entries { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 32px; }
 .cv-entry { min-width: 0; }
 .cv-entry:only-child { grid-column: 1 / -1; max-width: 68ch; }
-.cv-entry h5, .cv-tool-group h4 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.4; }
+.cv-entry h4, .cv-entry h5, .cv-tool-group h4 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.4; }
 .cv-entry p, .cv-tool-group p { margin: 5px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
 .cv-entry-link { display: inline-flex; align-items: center; min-height: 24px; gap: 6px; margin-top: 5px; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
 
