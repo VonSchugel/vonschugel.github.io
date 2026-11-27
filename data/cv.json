@@ -3,50 +3,45 @@
   "now": "I study philosophy and political economy, write about public discourse, and build tools for research and practical workflows.",
   "experience": [
     {
-      "period": "Ongoing",
+      "period": "2023-Ongoing",
       "title": "Epistemology & philosophy of science",
-      "description": "I study how beliefs can be tested and revised. I compare Popper and Feyerabend on scientific method, and trace disputes over empiricism, falsifiability, and fallibilism."
+      "description": "Tracing pragmatic approaches to methodoligcal pluralism and Fallibilism."
     },
     {
-      "period": "Ongoing",
+      "period": "2026-Ongoing",
       "title": "Political economy & social coordination",
-      "description": "I read Hayek on dispersed knowledge, prices, and complex social phenomena, and explore how people coordinate when each has only part of the information."
+      "description": "Retracing complex social phenomena framings and fat tailed assymetric effects/trubulence."
     },
     {
-      "period": "Nov 2026",
+      "period": "Mars 2024-ongoing",
       "title": "THESUS · Supervised browsing",
-      "description": "Published a browser workspace with human review, manual takeover, and session replay. Tested the handoff through a guided demo.",
+      "description": "Published a browser workspace with human review, manual takeover, and session replay.",
       "link": { "label": "View THESUS", "url": "https://github.com/VonSchugel/thesus" }
     },
     {
-      "period": "Nov 2026",
+      "period": "Nov 2026-Ongoing",
       "title": "Data OSINT & ASTIG · Research tools",
       "description": "Developed a terminal interface for research and a review workflow for versioned datasets. Built ASTIG separately to trace claims back to supplied evidence."
     },
     {
-      "period": "Nov 2026",
+      "period": "Sep 2026-Ongoing",
       "title": "7erfa w Bricole · Marketplace prototype",
       "description": "Studied the feasibility of a home services marketplace in Morocco. Built and tested booking, quotes, and operations workflows with fictional transactions."
     },
     {
-      "period": "Nov 2026",
-      "title": "Portfolio & project dependencies",
-      "description": "Published this redesigned portfolio with editable content, a Substack feed, and a map that shows how my projects exchange evidence."
+      "period": "Oct 2026-Ongoing",
+      "title": "Metalogic",
+      "description": "Developing Metelogical narrative tracing of silent causlity"
     },
     {
-      "period": "Oct 2026",
-      "title": "Logic & foundations",
-      "description": "Read Tarski on truth and proof, studied Gödel’s incompleteness theorems, and explored formal reasoning and mathematical fallibility through logic exercises."
-    },
-    {
-      "period": "Oct 2026",
+      "period": "Oct 2025-Ongoing",
       "title": "Swarm Studio · Agent workflows",
       "description": "Integrated local models and tested evidence exports into Support Studio for human review and the DIY Phone Gateway for planning."
     },
     {
       "period": "Oct 2026",
-      "title": "AEGIS-iPad · Offline evidence review",
-      "description": "Prototyped local model summaries that retain source references, and tested the software across Windows and Linux.",
+      "title": "AEGIS",
+      "description": "Hardware Reverse engineering instance of IOS.",
       "link": { "label": "View AEGIS-iPad", "url": "https://github.com/VonSchugel/AEGIS-iPad" }
     },
     {
@@ -55,32 +50,28 @@
       "description": "Compared architectures for real-time voice and Darija support. Documented provider tradeoffs, cost assumptions, and what a pilot would need to test."
     },
     {
-      "period": "May–Jun 2026",
-      "title": "Social theory & historical change",
-      "description": "Studied the economic calculation debate and compared Hegel and Marx on historical change alongside critiques of historicism."
+      "period": "Jan 2025-Onoging",
+      "title": "AnthropologySocial theory & historical change",
+      "description": "Anthropoligical investigation of civlizationnal cycles, Schopenhaurian *economic* prescriptive critic"
     },
     {
-      "period": "Jan 2026",
+      "period": "Jan 2026-Ongoing",
       "title": "Deceptive Discourse · Marqicci Take",
-      "description": "Published an essay on Aristotelian rhetoric, persuasion, and how claims gain credibility in public discourse.",
-      "link": { "label": "Read the essay", "url": "https://marqicci.substack.com/p/deceptive-discourse" }
+      "description": "Newsletter",
+      "link": { "label": "Enjoy the Read", "url": "https://marqicci.substack.com" }
     },
     {
       "period": "Nov 2024",
-      "title": "AI chat · Next.js starter experiment",
-      "description": "Explored Vercel’s AI Chatbot starter to see how a chat interface, streaming responses, and application data fit together."
-    },
-    {
-      "period": "Oct 2024",
-      "title": "First personal site",
-      "description": "Published a small HTML and CSS site around a tea theme. It became the starting point for this portfolio."
+      "title": "AI chatbot experiment",
+      "description": " Vercel’s AI Chatbot Infra"
     }
+
   ],
   "toolGroups": [
     {
       "title": "Web development",
       "context": "Personal sites, interactive views, and a booking prototype.",
-      "tools": ["HTML", "CSS", "JavaScript", "SVG", "Node.js", "Fastify"]
+      "tools": ["HTML", "CSS", "JavaScript", "SVG", "Node.js", "Fastify","Angular","Rust","TypeScript","Django","React"]
     },
     {
       "title": "Python web services",
@@ -95,12 +86,12 @@
     {
       "title": "Agents & local inference",
       "context": "Agent coordination, local model summaries, and evidence ranking.",
-      "tools": ["Agno", "Ollama", "Qwen3", "llama.cpp", "GGUF"]
+      "tools": ["Agno", "Ollama", "Qwen3", "llama.cpp", "GGUF","GPT","Claude","Kimi","DeepSeek","Inkling"]
     },
     {
       "title": "Browser automation & testing",
       "context": "Browser handoffs, integration checks, and regression tests.",
-      "tools": ["Playwright", "Chromium", "pytest", "unittest", "Node.js test runner"]
+      "tools": ["Playwright", "Chromium", "pytest", "unittest", "Node.js test runner","BrowserUse","Selenium", "Puppeteer","FastAPI"]
     },
     {
       "title": "Publishing & development environments",

@@ -190,7 +190,12 @@ export function renderArticles(articles) {
 }
 
 export function renderExperience(experience) {
-  return experience.map(entry => `<article class="timeline-item"><div class="timeline-date mono">${escapeHTML(entry.period)}</div><div><h3>${escapeHTML(entry.title)}</h3><p class="timeline-organization">${escapeHTML(entry.organization)}</p>${entry.description ? `<p>${escapeHTML(entry.description)}</p>` : ''}</div></article>`).join('\n');
+  if (!experience.length) return '';
+  const entries = experience.map(entry => `<li class="cv-phase">
+    <span class="cv-period">${escapeHTML(entry.period)}</span>
+    <div class="cv-entry"><h4>${escapeHTML(entry.title)}</h4><p>${escapeHTML(entry.organization)}</p>${entry.description ? `<p>${escapeHTML(entry.description)}</p>` : ''}</div>
+  </li>`);
+  return `<article class="cv-card" id="experience"><h3>Experience</h3><ol class="cv-timeline">${entries.join('\n')}</ol></article>`;
 }
 
 export function renderCV(cv) {
@@ -307,14 +312,18 @@ export function renderSite(template, data, year = new Date().getUTCFullYear()) {
   });
 }
 
-export async function build(root = ROOT) {
+export async function renderHomepage(root = ROOT) {
   const [template, teaLogo, profile, projects, articles, experience, cv, connections] = await Promise.all([
     readFile(path.join(root, 'site.template.html'), 'utf8'),
     readFile(path.join(root, 'assets', 'tea-logo.svg'), 'utf8'),
     ...['profile', 'projects', 'articles', 'experience', 'cv', 'connections'].map(async name => JSON.parse(await readFile(path.join(root, 'data', `${name}.json`), 'utf8'))),
   ]);
   if (!/<svg\b/i.test(teaLogo) || !/<\/svg\s*>/i.test(teaLogo)) throw new Error('assets/tea-logo.svg must contain a complete SVG logo.');
-  const html = renderSite(template, { profile, projects, articles, experience, cv, connections, teaLogo: teaLogo.replace(/^\s*<\?xml[^>]*\?>\s*/i, '') });
+  return renderSite(template, { profile, projects, articles, experience, cv, connections, teaLogo: teaLogo.replace(/^\s*<\?xml[^>]*\?>\s*/i, '') });
+}
+
+export async function build(root = ROOT) {
+  const html = await renderHomepage(root);
   await writeFile(path.join(root, 'index.html'), html);
   const dist = path.resolve(root, 'dist');
   if (path.dirname(dist) !== path.resolve(root) || path.basename(dist) !== 'dist') throw new Error('Refusing to replace an unexpected output directory.');
@@ -326,7 +335,7 @@ export async function build(root = ROOT) {
     try { await access(path.join(root, item)); } catch { continue; }
     await cp(path.join(root, item), path.join(dist, item), { recursive: true });
   }
-  console.log(`Built index.html and dist/ (${projects.length} projects, ${articles.length} articles, ${connections.length} map entries, ${experience.length} experience entries).`);
+  console.log('Built index.html and dist/.');
   return { html, dist };
 }
 
