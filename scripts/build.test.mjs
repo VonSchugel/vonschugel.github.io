@@ -83,6 +83,24 @@ test('the homepage template includes edits from both CV data files', async () =>
   assert.doesNotMatch(renderSite(template, data), /id="experience"/);
 });
 
+test('timeline groups by start year, sorts months newest first and preserves free-form periods', () => {
+  const data = fixture();
+  data.cv.experience = [
+    { period: 'Mars 2024-ongoing', title: 'First project' },
+    { period: 'Sep 2026-Ongoing', title: 'Earlier in the year' },
+    { period: 'Oct 2026', title: 'First October entry' },
+    { period: 'Oct 2026', title: 'Second October entry' },
+    { period: 'Field season <A>', title: 'Undated project' },
+  ];
+  const html = renderSite('{{CV_LAYOUT}}', data);
+  const work = html.match(/<article class="cv-chapter" id="cv-work">([\s\S]*?)<\/article>/)[1];
+  assert.deepEqual([...work.matchAll(/class="cv-period">([^<]+)</g)].map(m => m[1]), ['2026', '2024', 'Field season &lt;A&gt;']);
+  assert.deepEqual([...work.matchAll(/<h5>([^<]+)<\/h5>/g)].map(m => m[1]), [
+    'First October entry', 'Second October entry', 'Earlier in the year', 'First project', 'Undated project',
+  ]);
+  assert.match(work, /Mar · Ongoing/);
+});
+
 test('CV content renders in the page, is escaped, and supports optional education without invented entries', () => {
   const data = fixture();
   data.cv.summary = '<Student> & learner';

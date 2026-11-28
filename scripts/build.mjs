@@ -189,34 +189,70 @@ export function renderArticles(articles) {
   }).join('\n');
 }
 
-export function renderExperience(experience) {
-  if (!experience.length) return '';
-  const entries = experience.map(entry => `<li class="cv-phase">
-    <span class="cv-period">${escapeHTML(entry.period)}</span>
-    <div class="cv-entry"><h4>${escapeHTML(entry.title)}</h4><p>${escapeHTML(entry.organization)}</p>${entry.description ? `<p>${escapeHTML(entry.description)}</p>` : ''}</div>
-  </li>`);
-  return `<article class="cv-card" id="experience"><h3>Experience</h3><ol class="cv-timeline">${entries.join('\n')}</ol></article>`;
+const timelineMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function timelineDate(period) {
+  const label = period.trim();
+  if (/^(ongoing|present|current)$/i.test(label)) return { year: 'Ongoing', rank: Infinity, month: 0, label: '' };
+  // A start year determines the position. Keep other authored period formats readable.
+  const start = /^(?:([a-z]+)\s+)?(\d{4})\b/i.exec(label);
+  if (!start) return { year: label, rank: -Infinity, month: 0, label: '' };
+  const [, monthName, year] = start;
+  const month = timelineMonths.findIndex(name => name.toLowerCase() === monthName?.slice(0, 3).toLowerCase()) + 1;
+  const suffix = label.slice(start[0].length).trim();
+  const ongoing = /^[-–—]\s*(ongoing|onoging|present)$/i.test(suffix);
+  const standard = (!monthName || month) && (!suffix || ongoing);
+  const dateLabel = standard ? [timelineMonths[month - 1], ongoing && 'Ongoing'].filter(Boolean).join(' · ') : label;
+  return { year, rank: Number(year), month, label: dateLabel };
 }
 
-export function renderCV(cv) {
-  function timeline(items) {
-    const periods = new Map();
-    for (const entry of items) {
-      if (!periods.has(entry.period)) periods.set(entry.period, []);
-      periods.get(entry.period).push(entry);
-    }
-    const milestones = entries => entries.map(entry => `<li class="cv-entry"><h5>${escapeHTML(entry.title)}</h5>${entry.description ? `<p>${escapeHTML(entry.description)}</p>` : ''}${entry.link ? `<a class="cv-entry-link" href="${escapeHTML(entry.link.url)}">${escapeHTML(entry.link.label)} ${arrow}</a>` : ''}</li>`).join('');
-    return `<ol class="cv-timeline">${[...periods].map(([period, entries]) => `<li class="cv-phase"><h4 class="cv-period">${escapeHTML(period)}</h4><ul class="cv-phase-entries">${milestones(entries)}</ul></li>`).join('')}</ol>`;
+function renderTimeline(id, heading, items) {
+  if (!items.length) return '';
+  const groups = new Map();
+  for (const entry of items) {
+    const date = timelineDate(entry.period);
+    if (!groups.has(date.year)) groups.set(date.year, { ...date, entries: [] });
+    groups.get(date.year).entries.push({ entry, date });
   }
+  const years = [...groups.values()].sort((a, b) => b.rank - a.rank);
+  const rows = years.map(group => {
+    // Stable sorting preserves author order within the same month.
+    const milestones = group.entries.sort((a, b) => b.date.month - a.date.month).map(({ entry, date }) => {
+      const contents = [
+        date.label && `<p class="cv-entry-meta">${escapeHTML(date.label)}</p>`,
+        `<h5>${escapeHTML(entry.title)}</h5>`,
+        entry.organization && `<p class="cv-organization">${escapeHTML(entry.organization)}</p>`,
+        entry.description && `<p class="cv-entry-copy">${escapeHTML(entry.description)}</p>`,
+        entry.link && `<a class="cv-entry-link" href="${escapeHTML(entry.link.url)}">${escapeHTML(entry.link.label)} ${arrow}</a>`,
+      ];
+      return `<li class="cv-entry">${contents.filter(Boolean).join('')}</li>`;
+    });
+    return `<li class="cv-phase"><h4 class="cv-period">${escapeHTML(group.year)}</h4><ol class="cv-phase-entries" role="list">${milestones.join('')}</ol></li>`;
+  });
+  return `<article class="cv-chapter" id="${id}"><h3>${heading}</h3><ol class="cv-timeline" role="list">${rows.join('')}</ol></article>`;
+}
+
+export function renderExperience(experience) {
+  const entries = experience.map(({ period, title, organization, description }) => ({ period, title, organization, description }));
+  return renderTimeline('experience', 'Experience', entries);
+}
+
+export function renderCV(cv, experience = []) {
   const tools = (items, label) => `<ul class="cv-skills" role="list" aria-label="${escapeHTML(label)}">${items.map(item => `<li>${escapeHTML(item)}</li>`).join('')}</ul>`;
   const toolList = cv.toolGroups
     ? `<div class="cv-tool-groups">${cv.toolGroups.map(group => `<div class="cv-tool-group"><h4>${escapeHTML(group.title)}</h4>${group.context ? `<p>${escapeHTML(group.context)}</p>` : ''}${tools(group.tools, group.title)}</div>`).join('')}</div>`
     : tools(cv.skills, 'Tools and technologies');
-  return `<div class="cv-grid">
-    <div class="cv-overview"><p class="cv-status">${escapeHTML(cv.summary)}</p><p>${escapeHTML(cv.now)}</p></div>
-    <article class="cv-card cv-card--experience"><h3>Independent work</h3>${timeline(cv.experience)}</article>
-    <article class="cv-card cv-card--skills" id="cv-tools"><h3>Tools I’ve explored</h3>${toolList}</article>
-    ${cv.education?.length ? `<article class="cv-card cv-card--education"><h3>Education</h3>${timeline(cv.education)}</article>` : ''}
+  const sections = [
+    { id: 'cv-work', title: 'Independent work', html: renderTimeline('cv-work', 'Independent work', cv.experience) },
+    { id: 'experience', title: 'Experience', html: renderExperience(experience) },
+    { id: 'cv-education', title: 'Education', html: renderTimeline('cv-education', 'Education', cv.education ?? []) },
+    { id: 'cv-tools', title: "Tools I’ve explored", html: `<article class="cv-chapter cv-card--skills" id="cv-tools"><h3>Tools I’ve explored</h3>${toolList}</article>` },
+  ].filter(section => section.html);
+  return `<div class="cv-layout">
+    <div class="cv-overview"><p class="cv-status">${escapeHTML(cv.summary)}</p><p>${escapeHTML(cv.now)}</p>
+      <nav class="cv-nav" aria-label="CV sections">${sections.map(section => `<a href="#${section.id}">${section.title}</a>`).join('')}</nav>
+    </div>
+    <div class="cv-chapters">${sections.map(section => section.html).join('')}</div>
   </div>`;
 }
 
@@ -301,8 +337,11 @@ export function renderSite(template, data, year = new Date().getUTCFullYear()) {
     SUBSTACK_FEED_LINK: profile.substack ? `<link rel="alternate" type="application/rss+xml" title="${escapeHTML(publicationName)}" href="${escapeHTML(publicationPage('feed'))}">` : '',
     SUBSTACK_ARCHIVE_LINK: profile.substack ? `<a class="writing-archive mono" href="${escapeHTML(publicationPage('archive'))}" target="_blank" rel="noopener noreferrer">More on Substack ${arrow}</a>` : '',
     YEAR: String(year),
-    PROJECTS: renderProjects(projects), WRITING: renderArticles(articles), EXPERIENCE: renderExperience(experience),
-    CV: renderCV(cv), TEA_LOGO: data.teaLogo || '', CONNECTIONS: renderConnections(connections, profile.name),
+    PROJECTS: renderProjects(projects), WRITING: renderArticles(articles),
+    get EXPERIENCE() { return renderExperience(experience); },
+    get CV() { return renderCV(cv); },
+    get CV_LAYOUT() { return renderCV(cv, experience); },
+    TEA_LOGO: data.teaLogo || '', CONNECTIONS: renderConnections(connections, profile.name),
     SOCIALS: profile.socials.map(social => `<a class="social-link" href="${escapeHTML(social.url)}"${social.url.startsWith('mailto:') ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHTML(social.label)} ${arrow}</a>`).join('\n'),
     SUBSTACK_LINK: profile.substack ? `<a class="text-link" href="${escapeHTML(profile.substack)}" target="_blank" rel="noopener noreferrer">Read on Substack ${arrow}</a>` : '',
   };
